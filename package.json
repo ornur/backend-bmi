@@ -1,7 +1,7 @@
 {
   "name": "bmi-cal",
   "version": "1.0.0",
-  "description": "",
+  "description": "BMI calculator",
   "main": "root.js",
   "scripts": {
     "start": "node root.js",
@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.18.2"
   }
 }
