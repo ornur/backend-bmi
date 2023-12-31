@@ -1,5 +1,39 @@
+// Function to check if a value is a valid number
+function isValidNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+// Function to validate input fields
+function validateInputs() {
+    const weightInput = document.getElementById('weight');
+    const heightInput = document.getElementById('height');
+    const ageInput = document.getElementById('age');
+
+    if (!isValidNumber(weightInput.value)) {
+        alert('Please enter a valid number for weight.');
+        return false;
+    }
+
+    if (!isValidNumber(heightInput.value)) {
+        alert('Please enter a valid number for height.');
+        return false;
+    }
+    
+    if (!isValidNumber(ageInput.value) && (ageInput.value < 2 || ageInput.value > 100) ) { 
+        alert('Please enter a valid number for age.');
+        return false;
+    }
+
+    return true;
+}
+
 // Function to submit the form
 function submitForm() {
+    // Validate inputs before submitting the form
+    if (!validateInputs()) {
+        return;
+    }
+
     // Retrieve user inputs
     const weight = parseFloat(document.getElementById('weight').value);
     const height = parseFloat(document.getElementById('height').value);

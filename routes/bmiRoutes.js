@@ -2,13 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path'); // Import the 'path' module
 
-// Routes
-
-router.get('/', (req, res) => {
-    const indexPath = path.join(__dirname, '../public/views/index.html');
-    res.sendFile(indexPath);
-});
-
 // BMI Calculation Logic
 const calculateBMI = (weight, height, age, gender, unit) => {
     // Constants for BMI categories
@@ -27,7 +20,7 @@ const calculateBMI = (weight, height, age, gender, unit) => {
 
     // Convert height to meters if in Imperial units
     if (unit === 'imperial') {
-        height = height * 0.0254; // 1 inch = 0.0254 meters
+        height = height * 2.54; // 1 inch = 2.54 centimeters
     }
 
     // Convert weight to kilograms if in Imperial units
@@ -40,16 +33,54 @@ const calculateBMI = (weight, height, age, gender, unit) => {
     // BMI Calculation
     const bmi = weight / (height * height);
 
-    // Interpretation
+    // Interpretation based on age and gender
     let interpretation = '';
-    if (bmi < UNDERWEIGHT) {
-        interpretation = 'Underweight';
-    } else if (bmi <= NORMAL_WEIGHT) {
-        interpretation = 'Normal Weight';
-    } else if (bmi <= OVERWEIGHT) {
-        interpretation = 'Overweight';
+    if (age < 18) {
+        // BMI categories for age < 18
+        if (gender === 'male') {
+            if (bmi < 18.5) {
+                interpretation = `Underweight for ${age} year old male`;
+            } else if (bmi <= 24.9) {
+                interpretation = `Normal weight for ${age} year old male`;
+            } else if (bmi <= 29.9) {
+                interpretation = `Overweight for ${age} year old male`;
+            } else {
+                interpretation = `Obese for ${age} year old male`;
+            }
+        } else if (gender === 'female') {
+            if (bmi < 18.5) {
+                interpretation = `Underweight for ${age} year old female`;
+            } else if (bmi <= 24.9) {
+                interpretation = `Normal weight for ${age} year old female`;
+            } else if (bmi <= 29.9) {
+                interpretation = `Overweight for ${age} year old female`;
+            } else {
+                interpretation = `Obese for ${age} year old female`;
+            }
+        }
     } else {
-        interpretation = 'Obese';
+        // Interpretation for adults
+        if (gender === 'male') {
+            if (bmi < UNDERWEIGHT) {
+                interpretation = 'Underweight for male';
+            } else if (bmi <= NORMAL_WEIGHT) {
+                interpretation = 'Normal Weight for male';
+            } else if (bmi <= OVERWEIGHT) {
+                interpretation = 'Overweight for male';
+            } else {
+                interpretation = 'Obese for male';
+            }
+        } else if (gender === 'female') {
+            if (bmi < UNDERWEIGHT) {
+                interpretation = 'Underweight for female';
+            } else if (bmi <= NORMAL_WEIGHT) {
+                interpretation = 'Normal Weight for female';
+            } else if (bmi <= OVERWEIGHT) {
+                interpretation = 'Overweight for female';
+            } else {
+                interpretation = 'Obese for female';
+            }
+        }
     }
 
     // Return the result
@@ -59,6 +90,15 @@ const calculateBMI = (weight, height, age, gender, unit) => {
         message: `Your BMI is ${bmi.toFixed(2)}. You are ${interpretation}.`,
     };
 };
+
+
+
+// Routes
+
+router.get('/', (req, res) => {
+    const indexPath = path.join(__dirname, '../public/views/index.html');
+    res.sendFile(indexPath);
+});
 
 // Route to handle BMI calculation
 router.post('/calculate-bmi', (req, res) => {
@@ -73,7 +113,7 @@ router.post('/calculate-bmi', (req, res) => {
             </head>
             <body>
                 <h1>Your BMI Result</h1>
-                <p><strong>Your BMI:</strong> ${result.bmi} - ${result.interpretation}. ${result.message}</p>
+                <p><strong>Your BMI:</strong> ${result.bmi} - ${result.interpretation}</p>
                 <p><a href="/">Go back to the BMI Calculator</a></p>
             </body>
         </html>
