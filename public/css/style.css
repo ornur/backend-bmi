@@ -9,19 +9,28 @@ body {
 	0% {
 		background-position: 0% 50%;
 	}
+
 	50% {
 		background-position: 100% 50%;
 	}
+
 	100% {
 		background-position: 0% 50%;
 	}
 }
+
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: #333;
+	color: white;
+	text-align: center;
+}
+
+.glass {
+	background: hsla(0, 28%, 7%, 0.655);
+	backdrop-filter: blur(30px);
+	border-radius: 20px;
 }
